@@ -7,6 +7,13 @@
 class Movement 
 {
     public:
+        /** Пины управления колесами. */
+        const uint8_t WHEEL_LEFT_BACKWARD = 2, WHEEL_LEFT_FORWARD = 3; 
+        const uint8_t WHEEL_RIGHT_BACKWARD = 4, WHEEL_RIGHT_FORWARD = 5;
+
+        /** Скорость изменения ШИМ сигнала в миллисекундах */
+        const uint16_t PWM_CHANGE_RATE = 1000;
+
         /**
          * Управление движением.
          * 
@@ -37,9 +44,8 @@ class Movement
         }
 
     private:
-        /** Пины управления колесами. */
-        const uint8_t WHEEL_LEFT_FORWARD = 43, WHEEL_LEFT_BACKWARD = 42; 
-        const uint8_t WHEEL_RIGHT_FORWARD = 45, WHEEL_RIGHT_BACKWARD = 44;
+        /** Переменная используется для плавного разгона/остановки. */
+        uint8_t *prevValue = 0;
 
         /**
          * Скорость движения в зависимости от дистанции до препятствии.
@@ -107,34 +113,52 @@ class Movement
             if (directionMove == 0) { // движение вперед
                 switch (directionTurn) {
                     case 0: // не поворачиваем
-                        analogWrite(WHEEL_LEFT_FORWARD, normalSpeed);
-                        analogWrite(WHEEL_RIGHT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_LEFT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_RIGHT_FORWARD, normalSpeed);
                         break;
                     case 1: // поворот влево
-                        analogWrite(WHEEL_LEFT_FORWARD, slowSpeed);
-                        analogWrite(WHEEL_RIGHT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_LEFT_FORWARD, slowSpeed);
+                        analogWriteSmooth(WHEEL_RIGHT_FORWARD, normalSpeed);
                         break;
                     case 2: // поворот вправо
-                        analogWrite(WHEEL_LEFT_FORWARD, normalSpeed);
-                        analogWrite(WHEEL_RIGHT_FORWARD, slowSpeed);
+                        analogWriteSmooth(WHEEL_LEFT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_RIGHT_FORWARD, slowSpeed);
                         break;
                 }
             } else if (directionMove == 1) { // движение на месте
                 switch (directionTurn) {
                     case 0: // стоп
-                        digitalWrite(WHEEL_LEFT_BACKWARD, LOW);
-                        digitalWrite(WHEEL_RIGHT_BACKWARD, LOW);
+                        analogWriteSmooth(WHEEL_LEFT_BACKWARD, 0);
+                        analogWriteSmooth(WHEEL_RIGHT_BACKWARD, 0);
                     case 1: // разворот налево
-                        analogWrite(WHEEL_LEFT_BACKWARD, normalSpeed);
-                        analogWrite(WHEEL_RIGHT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_LEFT_BACKWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_RIGHT_FORWARD, normalSpeed);
                         break;
                     case 2: // разворот направо
-                        analogWrite(WHEEL_LEFT_FORWARD, normalSpeed);
-                        analogWrite(WHEEL_RIGHT_BACKWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_LEFT_FORWARD, normalSpeed);
+                        analogWriteSmooth(WHEEL_RIGHT_BACKWARD, normalSpeed);
                         break;
                 }
             } else if (directionMove == 2) { // движение назад
                 // не реализовано
             }
+        }
+
+        /** Плавное изменение ШИМ значения. */
+        void analogWriteSmooth(uint8_t pin, uint8_t value)
+        {
+            uint8_t step = PWM_CHANGE_RATE / abs(prevValue[pin] - value);
+
+            while (prevValue[pin] != value) {
+                if (prevValue[pin] < value) {
+                    prevValue[pin]++;
+                } else {
+                    prevValue[pin]--;
+                }
+                analogWrite(pin, prevValue[pin]);
+                delay(step);
+            }
+
+            analogWrite(pin, value);
         }
 };
