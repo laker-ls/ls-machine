@@ -18,8 +18,7 @@ class Vision
             /** Чем выше количество итераций, тем более точные показания, но необходимо большее количество времени для замера. */
             const uint8_t ITERATION_OF_DISTANCE = 3;
 
-            uint16_t *rawDatas, result;
-            uint16_t *datas = 0;
+            uint16_t rawDatas[3], datas[ITERATION_OF_DISTANCE], result;
 
             for(uint8_t i = 0; i < ITERATION_OF_DISTANCE; i++) {
                 for (uint8_t d = 0; d < 3; d++) {
@@ -43,10 +42,12 @@ class Vision
         {
             uint16_t duration, cm;
 
+            digitalWrite(eye[0], LOW);
+            delayMicroseconds(2);
             digitalWrite(eye[0], HIGH);
             delayMicroseconds(10);
             digitalWrite(eye[0], LOW);
-
+            
             duration = pulseIn(eye[1], HIGH, 23200); // 23200 = 400cm.
             if (duration == 0) {
                 cm = 999;
@@ -64,14 +65,14 @@ class Vision
         {
             uint16_t average;
 
+            delayMicroseconds(24000);
+
             if (a <= b && a <= c) {
-                average = (b <= c) ? b : c;
+                average = (b <= c ? b : c);
             } else if (b <= a && b <= c) {
-                average = (a <= c) ? a : c;
+                average = (a <= c ? a : c);
             } else if (c <= a && c <= b) {
-                average = (a <= b) ? a : b;
-            } else {
-                average = 0;
+                average = (a <= b ? a : b);
             }
 
             return average;

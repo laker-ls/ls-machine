@@ -20,10 +20,15 @@ void setup() {
   pinMode(movement.WHEEL_RIGHT_BACKWARD, OUTPUT);
   pinMode(movement.WHEEL_RIGHT_FORWARD, OUTPUT);
 
+  Serial.begin(9600);
+
   for (;;) {
     distanceFront = vision.distance(EYE_FRONT);
     movement.drive(distanceFront);
 
+    Serial.print(distanceFront);
+    Serial.println(" см.");
+    
     delay(100);
   }
 }
