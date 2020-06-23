@@ -5,29 +5,29 @@
 
 void setup() {  
   /** Номера пинов подключенных к HC-SR04, где первый элемент trig, второй echo. */
-  const uint8_t EYE_FRONT[2] = {22, 23};
+  const uint8_t EYE_FRONT[2] = {49, 48}, 
+                EYE_LEFT[2] = {51, 50},
+                EYE_RIGHT[2] = {53, 52};
 
-  int distanceFront;
+  uint16_t distanceFront, distanceLeft, distanceRight;
 
   Vision vision;
   Movement movement;
 
-  pinMode(EYE_FRONT[0], OUTPUT);
-  pinMode(EYE_FRONT[1], INPUT);
+  vision.pinModeEye(EYE_FRONT);
+  vision.pinModeEye(EYE_LEFT);
+  vision.pinModeEye(EYE_RIGHT);
 
-  pinMode(movement.WHEEL_LEFT_BACKWARD, OUTPUT);
-  pinMode(movement.WHEEL_LEFT_FORWARD, OUTPUT);
-  pinMode(movement.WHEEL_RIGHT_BACKWARD, OUTPUT);
-  pinMode(movement.WHEEL_RIGHT_FORWARD, OUTPUT);
+  movement.pinModeSet();
 
   Serial.begin(9600);
 
   for (;;) {
     distanceFront = vision.distance(EYE_FRONT);
-    movement.drive(distanceFront);
+    distanceLeft = vision.distance(EYE_LEFT);
+    distanceRight = vision.distance(EYE_RIGHT);
 
-    Serial.print(distanceFront);
-    Serial.println(" см.");
+    movement.drive(distanceFront, distanceLeft, distanceRight);
     
     delay(100);
   }

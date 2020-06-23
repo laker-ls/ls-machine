@@ -7,39 +7,53 @@
 class Movement 
 {
     public:
-        /** Пины управления колесами. */
-        const uint8_t WHEEL_LEFT_BACKWARD = 2, WHEEL_LEFT_FORWARD = 3; 
-        const uint8_t WHEEL_RIGHT_BACKWARD = 4, WHEEL_RIGHT_FORWARD = 5;
-
         /** Скорость изменения ШИМ сигнала в миллисекундах */
         const uint16_t PWM_CHANGE_RATE = 1;
 
         /**
          * Управление движением.
          * 
-         * @param distance расстояние до препятствия в сантиметрах.
+         * @param distanceFront расстояние спереди до препятствия в сантиметрах.
+         * @param distanceLeft расстояние слева до препятствия в сантиметрах
+         * @param distanceRight расстояние справа до препятствия в сантиметрах
          */
-        void drive(uint16_t distance) 
+        void drive(uint16_t distanceFront, uint16_t distanceLeft, uint16_t distanceRight) 
         {
             /** На данном этапе программы поворот налево и движение назад не используется, но оно будет необходимо в дальнейшем! */
 
             const uint8_t DIRECTION_NO_TURN = 0, DIRECTION_LEFT = 1, DIRECTION_RIGHT = 2;
             const uint8_t MOVE_FORWARD = 0, MOVE_IN_PLACE = 1, MOVE_BACKWARD = 2;
+            const uint16_t DISTANCE_CRITICAL = 15, DISTANCE_SMALL = 60, DISTANCE_NORMAL = 150, DISTANCE_LARGE = 300;
+            const uint8_t SPEED_SMALL = 50, SPEED_NORMAL = 125, SPEED_LARGE = 160, SPEED_MAXIMUM = 255;
 
-                   if (distance < 10) {
-                turn(MOVE_BACKWARD, DIRECTION_RIGHT, 160);
-            } else if (distance < 20) {
-                turn(MOVE_IN_PLACE, DIRECTION_RIGHT);
-            } else if (distance < 30) {
-                turn(MOVE_FORWARD, DIRECTION_RIGHT, 160, 80);
-            } else if (distance < 60) {
-                turn(MOVE_FORWARD, DIRECTION_NO_TURN, 190);
+            if (distanceFront < DISTANCE_CRITICAL) {
+                turn(MOVE_BACKWARD, DIRECTION_NO_TURN, SPEED_LARGE);
+            } else if (distanceFront < DISTANCE_SMALL) {
+                if (distanceLeft > DISTANCE_SMALL) {
+                    turn(MOVE_IN_PLACE, DIRECTION_LEFT, SPEED_LARGE);
+                } else if(distanceRight > DISTANCE_SMALL) {
+                    turn(MOVE_IN_PLACE, DIRECTION_RIGHT, SPEED_LARGE);
+                } else {
+                    turn(MOVE_IN_PLACE, DIRECTION_RIGHT, SPEED_LARGE); // Должен быть разворот на 180
+                }
             } else {
-                turn(MOVE_FORWARD, DIRECTION_NO_TURN);
+                turn(MOVE_FORWARD, DIRECTION_NO_TURN, SPEED_LARGE);
             }
         }
 
+        /** Настройка пинов */
+        void pinModeSet() {
+            pinMode(WHEEL_LEFT_BACKWARD, OUTPUT);
+            pinMode(WHEEL_LEFT_FORWARD, OUTPUT);
+            pinMode(WHEEL_RIGHT_BACKWARD, OUTPUT);
+            pinMode(WHEEL_RIGHT_FORWARD, OUTPUT);
+        }
+
     private:
+        /** Пины управления колесами. */
+        const uint8_t WHEEL_LEFT_BACKWARD = 2, WHEEL_LEFT_FORWARD = 3; 
+        const uint8_t WHEEL_RIGHT_BACKWARD = 4, WHEEL_RIGHT_FORWARD = 5;
+
         /** Переменная используется для плавного разгона/остановки. */
         uint8_t *prevValue = 0;
 
@@ -49,9 +63,9 @@ class Movement
          * @param directionMove направление движения, 0 - вперед, 1 - на месте, 2 - назад
          * @param directionTurn направление поворота, 0 - без поворотов, 1 - влуво, 2 - вправо
          * @param normalSpeed скорость движения
-         * @param slowSpeed низкая скорость движения для возможности поворотов
+         * @param angleRotation угол на который необходимо повернуть
          */
-        void turn(uint8_t directionMove, uint8_t directionTurn, uint8_t normalSpeed = 255, uint8_t slowSpeed = 255) 
+        void turn(uint8_t directionMove, uint8_t directionTurn, uint8_t normalSpeed = 255, uint16_t angleRotation = 180) 
         {            
             digitalWrite(WHEEL_LEFT_FORWARD, LOW);
             digitalWrite(WHEEL_LEFT_BACKWARD, LOW);
@@ -91,7 +105,7 @@ class Movement
                 analogWriteSmooth(WHEEL_LEFT_BACKWARD, normalSpeed);
                 analogWriteSmooth(WHEEL_RIGHT_BACKWARD, normalSpeed);
 
-                delay(500);
+                delay(1000);
             }
         }
 

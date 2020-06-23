@@ -31,6 +31,17 @@ class Vision
             return result;
         }
 
+        /**
+         * Назначение пинов для датчика расстояния.
+         * 
+         * @param eye массив, где первый элемент trig, второй echo
+         */
+        void pinModeEye(const uint8_t *eye)
+        {
+            pinMode (eye[0], OUTPUT);
+            pinMode (eye[1], INPUT);
+        }
+
     private:
         /**
          * Замер расстояния до препятствия.
