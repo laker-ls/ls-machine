@@ -7,6 +7,9 @@
 class Vector
 {
     protected:
+        const uint8_t DIAMETER_WHEEL; // в милиметрах
+        const uint16_t RPM; // обороты в минуту на максимальной скорости (55 оборотов за 1 вольт)
+
         /** 
          * Рассчитываем скорость второй пары колес исходя из текущей скорости и угла на который необходимо повернуть. 
          * @param currentSpeed скорость с которой движется объект в PWM
@@ -17,15 +20,6 @@ class Vector
             uint8_t speedForAngle;
 
             speedForAngle =  1;
-        }
-    public:
-        const uint8_t DIAMETER_WHEEL = 65; // в милиметрах
-        const uint16_t RPM = 330; // обороты в минуту на максимальной скорости (55 оборотов за 1 вольт)
-
-        /** Окружность колеса в милиметрах. */
-        uint16_t circumferenceWheel()
-        {
-            return (DIAMETER_WHEEL / 2) * 2 * 3.14;
         }
 
         /** Скорость движения (сантиметров в секунду) */
@@ -43,5 +37,11 @@ class Vector
             result = (v2 + v1) / (v2 - v1) * (b / 2);
 
             return result;
+        }
+    private:
+        /** Окружность колеса в милиметрах. */
+        uint16_t circumferenceWheel()
+        {
+            return (DIAMETER_WHEEL / 2) * 2 * 3.14;
         }
 };

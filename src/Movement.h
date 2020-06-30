@@ -1,10 +1,11 @@
 #pragma once
 #include <Arduino.h>
+#include <Vector.h>
 
 /**
  * Всё связанное с работой двигателей.
  */
-class Movement 
+class Movement : public Vector
 {
     public:
         /**
@@ -24,13 +25,13 @@ class Movement
             const uint8_t SPEED_SMALL = 30, SPEED_NORMAL = 80, SPEED_LARGE = 100, SPEED_MAXIMUM = 120; // напряжение 12В, не использовать максимальный ШИМ
 
             if (distanceFront < DISTANCE_CRITICAL) {
-                turn(MOVE_BACKWARD, DIRECTION_NO_TURN, SPEED_NORMAL);
+                turn(MOVE_BACKWARD, DIRECTION_NO_TURN, SPEED_NORMAL, 0);
             } else if (distanceFront < DISTANCE_SMALL) {
-                turn(MOVE_IN_PLACE, DIRECTION_RIGHT, SPEED_NORMAL);
+                turn(MOVE_IN_PLACE, DIRECTION_RIGHT, SPEED_NORMAL, 90);
             } else if (distanceFront < DISTANCE_NORMAL) {
-                turn(MOVE_FORWARD, DIRECTION_NO_TURN, SPEED_NORMAL);
+                turn(MOVE_FORWARD, DIRECTION_NO_TURN, SPEED_NORMAL, 0);
             } else {
-                turn(MOVE_FORWARD, DIRECTION_NO_TURN, SPEED_LARGE);
+                turn(MOVE_FORWARD, DIRECTION_NO_TURN, SPEED_LARGE, 0);
             }
         }
 
@@ -41,7 +42,9 @@ class Movement
             pinMode(WHEEL_RIGHT_BACKWARD, OUTPUT);
             pinMode(WHEEL_RIGHT_FORWARD, OUTPUT);
         }
-
+    protected:
+        const uint8_t DIAMETER_WHEEL = 65;
+        const uint16_t RPM = 330;
     private:
         /** Пины управления колесами. */
         const uint8_t WHEEL_LEFT_BACKWARD = 2, WHEEL_LEFT_FORWARD = 3; 
@@ -102,8 +105,22 @@ class Movement
                 analogWriteSmooth(WHEEL_LEFT_BACKWARD, speed);
                 analogWriteSmooth(WHEEL_RIGHT_BACKWARD, speed);
 
+                centimetersPerSecond();
                 delay(1000);
             }
+        }
+
+        /** 
+         * Проехать сантиметров 
+         * 
+         * @param distance расстояние необходимое проехать в сантиметрах
+         */
+        void driveCm(uint16_t distance)
+        {
+            uint16_t speedPerSecond = centimetersPerSecond(),
+                     period = (distance / speedPerSecond) * 1000;
+
+            delay(period);
         }
 
         /** Плавное изменение ШИМ значения. */
