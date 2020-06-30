@@ -18,7 +18,7 @@ class Vector
 
             speedForAngle =  1;
         }
-    private:
+    public:
         const uint8_t DIAMETER_WHEEL = 65; // в милиметрах
         const uint16_t RPM = 330; // обороты в минуту на максимальной скорости (55 оборотов за 1 вольт)
 
@@ -33,4 +33,15 @@ class Vector
         {
             return RPM / 60 * circumferenceWheel();
         }
-}
+
+        /** Расчет радиуса поворота */
+        uint16_t radiusTurn()
+        {
+            uint8_t v2 = 1, v1 = 0.5, b = 120;
+            uint16_t result;
+
+            result = (v2 + v1) / (v2 - v1) * (b / 2);
+
+            return result;
+        }
+};

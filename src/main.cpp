@@ -3,33 +3,25 @@
 #include <Movement.h>
 #include <Vision.h>
 
-void setup() {  
+void setup() {    
+
   /** Номера пинов подключенных к HC-SR04, где первый элемент trig, второй echo. */
-  const uint8_t EYE_FRONT[2] = {49, 48}, 
-                EYE_LEFT[2] = {51, 50},
-                EYE_RIGHT[2] = {53, 52};
+  const uint8_t EYE_FRONT[2] = {53, 52};
 
-  uint16_t distanceFront, distanceLeft, distanceRight;
+  uint16_t distanceFront;
 
-  Vision vision;
-  Movement movement;
+  Vision Vision;
+  Movement Movement;
 
-  vision.pinModeEye(EYE_FRONT);
-  vision.pinModeEye(EYE_LEFT);
-  vision.pinModeEye(EYE_RIGHT);
-
-  movement.pinModeSet();
-
-  Serial.begin(9600);
+  Vision.pinModeEye(EYE_FRONT);
+  Movement.pinModeSet();
 
   for (;;) {
-    distanceFront = vision.distance(EYE_FRONT);
-    distanceLeft = vision.distance(EYE_LEFT);
-    distanceRight = vision.distance(EYE_RIGHT);
+    distanceFront = Vision.distance(EYE_FRONT);
 
-    movement.drive(distanceFront, distanceLeft, distanceRight);
+    Movement.drive(distanceFront);
     
-    delay(100);
+    delay(300);
   }
 }
 
