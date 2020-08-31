@@ -1,27 +1,23 @@
 #include <Arduino.h>
 
-#include <Movement.h>
-#include <Vision.h>
+#include "Characteristics.h"
+
+#include "sensors/Laser.h"
+#include "sensors/Ultrasound.h"
+#include "Movement.h"
+#include "reflexes/Moving.h"
+
+/**
+ * Разобраться в классе Movement, лишние кейсы.
+ */
 
 void setup() {    
-
-  /** Номера пинов подключенных к HC-SR04, где первый элемент trig, второй echo. */
-  const uint8_t EYE_FRONT[2] = {53, 52};
-
-  uint16_t distanceFront;
-
-  Vision Vision;
-  Movement Movement;
-
-  Vision.pinModeEye(EYE_FRONT);
-  Movement.pinModeSet();
+  Moving Moving;
 
   for (;;) {
-    distanceFront = Vision.distance(EYE_FRONT);
+    Moving.main();
 
-    Movement.drive(distanceFront);
-    
-    delay(300);
+    delay(1000);
   }
 }
 
