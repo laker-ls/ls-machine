@@ -22,13 +22,13 @@ class Laser
             sensorLeft.setTimeout(500);
             sensorRight.setTimeout(500);
 
-            // pinMode(LASER_LEFT, INPUT);
-            // sensorLeft.init(true);
-            // sensorLeft.setAddress((uint8_t)1);
+            pinMode(LASER_LEFT, INPUT);
+            sensorLeft.init(true);
+            sensorLeft.setAddress((uint8_t)1);
 
             pinMode(LASER_RIGHT, INPUT);
             sensorRight.init(true);
-            // sensorRight.setAddress((uint8_t)2);
+            sensorRight.setAddress((uint8_t)2);
         }
 
         /**
