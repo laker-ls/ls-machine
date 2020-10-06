@@ -11,13 +11,17 @@
  * Разобраться в классе Movement, лишние кейсы.
  */
 
-void setup() {    
-  Moving Moving;
+void setup() {
+  TCCR3B = TCCR3B & 0xe0 | 0x05;
+
+  Moving MovingObject;
+  Vision VisionObject;
+
+  Laser LaserObject;
+  LaserObject.init();
 
   for (;;) {
-    Moving.main();
-
-    delay(1000);
+    MovingObject.main(LaserObject, VisionObject);
   }
 }
 

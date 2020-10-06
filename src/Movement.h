@@ -85,6 +85,7 @@ class Movement
                         analogWrite(WHEEL_RIGHT_PWM, speed);
                         break;
                 }
+                
                 delayTurn(angleRotation, speed, 0);
             }
         }
@@ -98,12 +99,12 @@ class Movement
          */
         void delayTurn(uint16_t degree, uint8_t sideFaster, uint8_t sideSlow)
         {
-            uint8_t sideFasterInCm = VectorObject.centimetersPerSecond(sideFaster);
-            uint8_t sideSlowInCm = VectorObject.centimetersPerSecond(sideSlow);
+            float sideFasterInMm = VectorObject.millimetersPerSecond(sideFaster);
+            float sideSlowInMm = VectorObject.millimetersPerSecond(sideSlow);
+            
+            uint16_t time = VectorObject.timeForTurn(degree, sideFasterInMm, sideSlowInMm);
 
-            uint16_t time = VectorObject.timeForTurn(degree, sideFasterInCm, sideSlowInCm);
-
-            delay(time);
+            delay(time); // 1700 = 360
         }
     
     private:
