@@ -2,7 +2,6 @@
  * Файл Characteristics является набором констант, в которых определены различные физические характеристики робота.
  */
 #pragma once
-#include <Arduino.h>
 
 const float BODY_WIDTH = 180;
 const float BODY_LENGTH = 220;

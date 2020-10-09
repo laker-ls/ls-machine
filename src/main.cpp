@@ -1,11 +1,4 @@
-#include <Arduino.h>
-
-#include "Characteristics.h"
-
-#include "sensors/Laser.h"
-#include "sensors/Ultrasound.h"
-#include "Movement.h"
-#include "reflexes/Moving.h"
+#include "main.h"
 
 /**
  * Разобраться в классе Movement, лишние кейсы.
@@ -14,14 +7,12 @@
 void setup() {
   TCCR3B = TCCR3B & 0xe0 | 0x05;
 
-  Moving MovingObject;
-  Vision VisionObject;
-
-  Laser LaserObject;
+  MovementObject.init();
   LaserObject.init();
+  UltrasoundObject.setPin(ULTRASOUND_FRONT);
 
   for (;;) {
-    MovingObject.main(LaserObject, VisionObject);
+    MovingObject.main();
   }
 }
 
