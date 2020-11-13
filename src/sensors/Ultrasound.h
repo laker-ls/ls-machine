@@ -5,6 +5,10 @@
  */
 class Ultrasound
 {
+    private:
+        uint8_t trig;
+        uint8_t echo;
+
     public:
         /**
          * Назначение пинов для датчика расстояния.
@@ -13,9 +17,10 @@ class Ultrasound
          */
         void setPin(const uint8_t *eye);
 
-    private:
+        void getPin();
+
         /**
          * @return расстояние в сантиметрах с ограничением на максимальное расстояние в 400см.
          */
-        uint16_t distance();
+        uint16_t distanceInCm();
 };

@@ -2,20 +2,23 @@
 
 #include "characteristics.h"
 
-#include "Movement.h"
+#include "logics/Movement.h"
 #include "Vector.h"
 #include "reflexes/Moving.h"
 #include "reflexes/Vision.h"
 #include "sensors/Laser.h"
 #include "sensors/Ultrasound.h"
 
-Movement MovementObject;
-Vector VectorObject;
-
-Moving MovingObject;
-Vision VisionObject;
-
-Laser LaserObject;
-Ultrasound UltrasoundObject;
+extern Movement MovementObject;
+extern Vector VectorObject;
+extern Moving MovingObject;
+extern Vision VisionObject;
+extern Laser LaserObject;
+extern Ultrasound UltrasoundFrontLeft;
+extern Ultrasound UltrasoundFrontRight;
+extern Ultrasound UltrasoundLeft;
+extern Ultrasound UltrasoundRight;
 
 void setup();
+
+void marsh();

@@ -4,49 +4,31 @@
  * Разобраться в классе Movement, лишние кейсы.
  */
 
+  Movement MovementObject;
+  Vector VectorObject;
+  Moving MovingObject;
+  Vision VisionObject;
+  Laser LaserObject;
+
+  Ultrasound UltrasoundFrontLeft;
+  Ultrasound UltrasoundFrontRight;
+  Ultrasound UltrasoundLeft;
+  Ultrasound UltrasoundRight;
+
 void setup() {
-  TCCR3B = TCCR3B & 0xe0 | 0x05;
+  TCCR3B = (TCCR3B & 0xe0) | 0x05; // ШИМ двигателя
+
+  pinMode(SPEAKER, OUTPUT);
 
   MovementObject.init();
   LaserObject.init();
-  UltrasoundObject.setPin(ULTRASOUND_FRONT);
+  
+  UltrasoundFrontLeft.setPin(ULTRASOUND_FRONT_LEFT);
+  UltrasoundFrontRight.setPin(ULTRASOUND_FRONT_RIGHT);
+  UltrasoundLeft.setPin(ULTRASOUND_LEFT);
+  UltrasoundRight.setPin(ULTRASOUND_RIGHT);
 
   for (;;) {
     MovingObject.main();
   }
 }
-
-/**
- *  _________
- * | (.) (.) |
- * |   ---   |
- * |_\\___//_|
- * 
- * Концепт робота.
- * 
- * Главные цели: 
- *  - Избегать столкновения.
- *  - Плавные повороты.
- *  - Плавное ускорение и торможение.
- * 
- * Второстепенные цели: 
- *  - Стремление двигаться вперед относительно начального положения.
- *  - Определять движущиеся объекты и избегать их.
- *  - Включать фары при низком освещении.
- *  - Включать стопари при торможении и заднем ходе.
- * 
- * Особенности:
- *  - Обычно движется не на максимальной скорости.
- *  - Иногда ускоряет скорость движение до максимальной.
- *  - Может разворачиваться на месте.
- *  - Поворачивает с нахлестом по дуге для определения достаточного места для проезда.
- *    Сила нахлеста зависит от его ширины.
- * 
- * Поведение:
- *  Избегает столкновение следующим способом:
- *    - Измеряет расстояние перед собой.
- *    - Обнаружив препятствие на определенном расстоянии снижает скорость в 
- *      зависимости от расстояния до препятствия, при критической дистанции останавливается.
- *    - Поворот осуществляет при обнаружении препятствия, чем оно ближе, тем более резкий разворот.
- *      Поворачивает до тех пор, пока не увидит свободный путь.
- */

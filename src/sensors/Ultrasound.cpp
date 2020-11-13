@@ -1,8 +1,5 @@
 #include "main.h"
 
-uint8_t trig;
-uint8_t echo;
-
 void Ultrasound::setPin(const uint8_t *eye)
 {
     trig = eye[0];
@@ -12,7 +9,17 @@ void Ultrasound::setPin(const uint8_t *eye)
     pinMode (echo, INPUT);
 }
 
-uint16_t Ultrasound::distance()
+void Ultrasound::getPin()
+{
+    Serial.begin(9600);
+    Serial.print("trig: ");
+    Serial.println(trig);
+    Serial.print("echo: ");
+    Serial.println(echo);
+    delay(4000);
+}
+
+uint16_t Ultrasound::distanceInCm()
 {
     uint16_t duration, cm;
 

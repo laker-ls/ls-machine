@@ -23,7 +23,7 @@ void Movement::turn(uint8_t directionMove, uint8_t directionTurn, uint8_t speed,
                 break;
             case 1: // поворот влево
                 digitalWrite(WHEEL_LEFT_FORWARD, HIGH);
-                analogWrite(WHEEL_LEFT_PWM, speed);
+                analogWrite(WHEEL_LEFT_PWM, 50);
 
                 digitalWrite(WHEEL_RIGHT_FORWARD, HIGH);
                 analogWrite(WHEEL_RIGHT_PWM, speed);
@@ -33,7 +33,7 @@ void Movement::turn(uint8_t directionMove, uint8_t directionTurn, uint8_t speed,
                 analogWrite(WHEEL_LEFT_PWM, speed);
 
                 digitalWrite(WHEEL_RIGHT_FORWARD, HIGH);
-                analogWrite(WHEEL_RIGHT_PWM, speed);
+                analogWrite(WHEEL_RIGHT_PWM, 50);
                 break;
         }
     } else if (directionMove == 1) { // движение на месте
