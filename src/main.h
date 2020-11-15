@@ -1,24 +1,27 @@
 #include <Arduino.h>
 
-#include "characteristics.h"
+#include "physicalParameters/bodyParameters.h"
+#include "physicalParameters/pinsParameters.h"
 
-#include "logics/Movement.h"
-#include "Vector.h"
-#include "reflexes/Moving.h"
-#include "reflexes/Vision.h"
-#include "sensors/Laser.h"
-#include "sensors/Ultrasound.h"
+#include "brains/automatisms/MoveAutomatism.h"
+#include "brains/logics/MoveLogic.h"
+#include "brains/automatisms/VisionAutomatism.h"
+#include "brains/senseOrgans/vision/LaserSense.h"
+#include "brains/senseOrgans/vision/UltrasoundSense.h"
 
-extern Movement MovementObject;
-extern Vector VectorObject;
-extern Moving MovingObject;
-extern Vision VisionObject;
-extern Laser LaserObject;
-extern Ultrasound UltrasoundFrontLeft;
-extern Ultrasound UltrasoundFrontRight;
-extern Ultrasound UltrasoundLeft;
-extern Ultrasound UltrasoundRight;
+#include "registers/Timer1.h"
+#include "registers/Timer3.h"
+
+extern MoveAutomatism MoveAutomatismObject;
+extern MoveLogic MoveLogicObject;
+extern VisionAutomatism VisionAutomatismObject;
+extern LaserSense LaserSenseLeft;
+extern LaserSense LaserSenseRight;
+extern UltrasoundSense UltrasoundSenseFrontLeft;
+extern UltrasoundSense UltrasoundSenseFrontRight;
+extern UltrasoundSense UltrasoundSenseLeft;
+extern UltrasoundSense UltrasoundSenseRight;
 
 void setup();
-
-void marsh();
+void setPinUltrasoundSenses();
+void settingTimers();

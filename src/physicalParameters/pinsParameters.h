@@ -1,15 +1,4 @@
-/**
- * Файл Characteristics является набором констант, в которых определены различные физические характеристики робота.
- */
 #pragma once
-
-const float BODY_WIDTH = 180;
-const float BODY_LENGTH = 220;
-const uint8_t DISTANCE_BETWEEN_LASER = 145; // расстояние между двумя фронтальными лазерами
-const uint16_t LASER_DISTANCE_LIMIT = 1200;
-
-const float WHEEL_DIAMETER = 65;
-const float MOTOR_VOLTAGE = 7.6;
 
 /** Пины лазерных датчиков */
 const uint8_t LASER_LEFT = 40;
