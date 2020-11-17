@@ -42,7 +42,7 @@ void setPinUltrasoundSenses()
 void settingTimers()
 {
   Timer1 Timer1Object; 
-  Timer1Object.setInterval(2); // для плавного изменения шим моторов
+  Timer1Object.setInterval(8); // для плавного изменения шим моторов
 
   Timer3 Timer3Object; 
   Timer3Object.setDividerRegister(1024); // для безшумной частоты шим на двигатели

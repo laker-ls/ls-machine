@@ -28,6 +28,7 @@ void MotorDriverLN298N::moveLeft(uint8_t speed, uint8_t speedLower)
     digitalWrite(WHEEL_RIGHT_FORWARD, HIGH);
     digitalWrite(WHEEL_RIGHT_BACKWARD, LOW);
     analogWrite(WHEEL_RIGHT_PWM, speed);
+
 }
 
 void MotorDriverLN298N::moveRight(uint8_t speed, uint8_t speedLower)

@@ -31,12 +31,15 @@ class MoveAutomatism
         uint8_t movePrev;
         uint8_t turnPrev;
         uint8_t currentSpeed;
+
+        uint8_t stepAcceleration;
         
         void setPins();
         void setInitialProperties();
 
         void setPreviousData();
         void changeSpeed();
+        void fasterChangeAtLowSpeed();
         void moving();
 
         uint8_t speedLower();

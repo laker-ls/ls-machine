@@ -14,18 +14,22 @@ void MoveLogic::main()
         }
     } else if (barrierFront < this->DISTANCE_SMALL) {
         if (barrierLeft < barrierRight) {
-            goRight(this->SPEED_LARGE);
+            goRight(this->SPEED_SMALL);
         } else {
-            goLeft(this->SPEED_LARGE);
+            goLeft(this->SPEED_SMALL);
         }
     } else if (barrierFront < this->DISTANCE_NORMAL) {
+        if (barrierLeft < barrierRight) {
+            goRight(this->SPEED_NORMAL);
+        } else {
+            goLeft(this->SPEED_NORMAL);
+        }
+    } else if (barrierFront < this->DISTANCE_LARGE) {
         if (barrierLeft < barrierRight) {
             goRight(this->SPEED_MAXIMUM);
         } else {
             goLeft(this->SPEED_MAXIMUM);
         }
-    } else if (barrierFront < this->DISTANCE_LARGE) {
-        goFront(this->SPEED_LARGE);
     } else {
         goFront(this->SPEED_MAXIMUM);
     }
