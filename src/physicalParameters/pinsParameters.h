@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Arduino.h>
+
 /** Пины лазерных датчиков */
 const uint8_t LASER_LEFT = 40;
 const uint8_t LASER_RIGHT = 38;

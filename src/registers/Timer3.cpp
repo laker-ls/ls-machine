@@ -1,4 +1,4 @@
-#include "main.h"
+#include "Timer3.h"
 
 void Timer3::setDividerRegister(uint16_t devider)
 {

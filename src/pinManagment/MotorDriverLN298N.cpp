@@ -1,5 +1,16 @@
 #include "pinManagment/MotorDriverLN298N.h"
 
+void MotorDriverLN298N::init()
+{
+    this->settingTimer3();
+    this->setPins();
+}
+
+void MotorDriverLN298N::settingTimer3()
+{
+  Timer3Object.setDividerRegister(1024); // для безшумной частоты шим на двигатели
+}
+
 void MotorDriverLN298N::setPins()
 {
     pinMode(WHEEL_LEFT_BACKWARD, OUTPUT);

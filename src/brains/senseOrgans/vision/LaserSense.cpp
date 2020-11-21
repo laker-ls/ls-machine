@@ -1,4 +1,4 @@
-#include "main.h"
+#include "LaserSense.h"
 
 void LaserSense::init(uint8_t pinXSHUT)
 {

@@ -1,8 +1,8 @@
-#include "main.h"
+#include "MoveAutomatism.h"
 
 void MoveAutomatism::init()
 {
-    MotorDriverLN298NObject.setPins();
+    MotorDriverLN298NObject.init();
 }
 
 void MoveAutomatism::moving(uint8_t directionMove, uint8_t directionTurn, uint8_t speed, uint8_t speedLower) 

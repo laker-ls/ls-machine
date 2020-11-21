@@ -1,4 +1,4 @@
-#include "main.h"
+#include "UltrasoundSense.h"
 
 void UltrasoundSense::setPins(const uint8_t *eye)
 {

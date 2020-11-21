@@ -1,8 +1,10 @@
-#include "main.h"
+#include "MoveLogic.h"
 
 void MoveLogic::init()
 {
+    VisionAutomatismObject.init();
     ChoiceTurnObject.direction = DIRECTION_RIGHT;
+    MoveAutomatismObject.init();
 }
 
 void MoveLogic::main()

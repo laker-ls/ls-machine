@@ -1,4 +1,24 @@
-#include "main.h"
+#include "VisionAutomatism.h"
+
+void VisionAutomatism::init()
+{
+    this->setPinLaserSenses();
+    this->setPinUltrasoundSenses();
+}
+
+void VisionAutomatism::setPinLaserSenses()
+{
+    LaserSenseLeft.init(LASER_LEFT);
+    LaserSenseRight.init(LASER_RIGHT);
+}
+
+void VisionAutomatism::setPinUltrasoundSenses()
+{
+    UltrasoundSenseFrontLeft.setPins(ULTRASOUND_FRONT_LEFT);
+    UltrasoundSenseFrontRight.setPins(ULTRASOUND_FRONT_RIGHT);
+    UltrasoundSenseLeft.setPins(ULTRASOUND_LEFT);
+    UltrasoundSenseRight.setPins(ULTRASOUND_RIGHT);
+}
 
 uint16_t VisionAutomatism::barrierFront()
 {
