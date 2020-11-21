@@ -7,13 +7,19 @@ void LaserSense::init(uint8_t pinXSHUT)
     sensor.init(true);
     sensor.setAddress(pinXSHUT);
     sensor.setTimeout(500);
+
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodPreRange, 16);
+    sensor.setVcselPulsePeriod(VL53L0X::VcselPeriodFinalRange, 12);
+
+    sensor.startContinuous();
 }
 
 uint16_t LaserSense::distanceInCm()
 {
     uint16_t result;
+    uint16_t distanceInMm = this->sensor.readRangeContinuousMillimeters();
 
-    result = (this->sensor.readRangeSingleMillimeters() / 10);
+    result = (distanceInMm / 10);
     if (result > MAX_RANGE_CM) {
         result = 999;
     }

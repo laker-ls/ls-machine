@@ -18,7 +18,7 @@ uint16_t UltrasoundSense::distanceInCm()
     delayMicroseconds(10);
     this->UltrasoundHC_SR04Object.digitalTrig(LOW);
     
-    duration = this->UltrasoundHC_SR04Object.pulseInEcho(HIGH, 23200); // 23200 = 400см.
+    duration = this->UltrasoundHC_SR04Object.pulseInEcho(HIGH, 9100); // 9100 = 100см.
     if (duration == 0) {
         cm = 999;
     } else {

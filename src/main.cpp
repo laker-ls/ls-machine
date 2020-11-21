@@ -12,10 +12,13 @@ UltrasoundSense UltrasoundSenseFrontRight;
 UltrasoundSense UltrasoundSenseLeft;
 UltrasoundSense UltrasoundSenseRight;
 
+SpeakerAutomatism SpeakerAutomatismObject;
+
 uint8_t currentSpeed = 0;
 uint8_t needSpeed = 0;
 
 void setup() {
+  MoveLogicObject.init();
   MoveAutomatismObject.init();
 
   LaserSenseLeft.init(LASER_LEFT);
@@ -23,6 +26,9 @@ void setup() {
   
   setPinUltrasoundSenses();
   settingTimers();
+
+  SpeakerAutomatismObject.init();
+  SpeakerAutomatismObject.wokeUp();
 
   Serial.begin(9600);
 
@@ -41,9 +47,6 @@ void setPinUltrasoundSenses()
 
 void settingTimers()
 {
-  Timer1 Timer1Object; 
-  Timer1Object.setInterval(8); // для плавного изменения шим моторов
-
   Timer3 Timer3Object; 
   Timer3Object.setDividerRegister(1024); // для безшумной частоты шим на двигатели
 }

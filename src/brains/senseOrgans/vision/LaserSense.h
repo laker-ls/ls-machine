@@ -19,7 +19,7 @@ class LaserSense
         uint16_t distanceInCm();
 
     private:
-        const uint8_t MAX_RANGE_CM = 120;
+        const uint8_t MAX_RANGE_CM = 140;
 
         VL53L0X sensor;
         LaserVL53L0X LaserVL53L0XObject;
