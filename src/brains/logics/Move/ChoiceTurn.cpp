@@ -1,21 +1,46 @@
 #include "ChoiceTurn.h"
 
-void ChoiceTurn::calculate(uint16_t frontDistance, uint16_t leftDistance, uint16_t rightDistance)
+void ChoiceTurn::calculate(uint16_t frontLeftDistance, uint16_t frontRightDistance, uint16_t frontDistance, uint16_t leftDistance, uint16_t rightDistance)
 {
-    this->setProperties(frontDistance, leftDistance, rightDistance);
+    this->setProperties(frontLeftDistance, frontRightDistance, frontDistance, leftDistance, rightDistance);
+    this->setChecks();
 
-    if (this->isDistanceLarge()) {
+    if (this->isDistanceLarge) {
         this->directionNotTurn();
-    } else if (this->isDistanceCritical() || this->isLaterDifferenceGood()) {
+    } else if () {
+        
+    } else if ((this->isDistanceCritical && this->isBarrierAvoid) || (!this->isDistanceCritical && this->isLateralDifferenceGood)) {
         this->directionTurn();
     }
 }
 
-void ChoiceTurn::setProperties(uint16_t frontDistance, uint16_t leftDistance, uint16_t rightDistance)
+void ChoiceTurn::setProperties(uint16_t frontLeftDistance, uint16_t frontRightDistance, uint16_t frontDistance, uint16_t leftDistance, uint16_t rightDistance)
 {
+    this->frontLeftDistance = frontLeftDistance;
+    this->frontRightDistance = frontRightDistance;
     this->frontDistance = frontDistance;
     this->leftDistance = leftDistance;
     this->rightDistance = rightDistance;
+}
+
+void ChoiceTurn::setChecks()
+{
+    this->isDistanceLarge = (this->frontDistance >= this->DISTANCE_LARGE);
+    this->isDistanceCritical = (this->frontDistance <= this->DISTANCE_CRITICAL);
+    this->isBarrierAvoid = (this->direction != DIRECTION_NO_TURN);
+    this->isLateralDifferenceGood = calculateLateralDifferenceGood();
+}
+
+bool ChoiceTurn::calculateLateralDifferenceGood()
+{
+    const uint8_t distanceDifferenceMinimal = ((this->frontDistance / 1.8) + 40);
+    uint16_t distanceDifference = (this->leftDistance - this->rightDistance);
+
+    bool result = false;
+    if (distanceDifference > distanceDifferenceMinimal) {
+        result = true;
+    }
+    return result;
 }
 
 void ChoiceTurn::directionNotTurn()
@@ -30,34 +55,4 @@ void ChoiceTurn::directionTurn()
     } else {
         this->direction = DIRECTION_RIGHT;
     }
-}
-
-bool ChoiceTurn::isLaterDifferenceGood()
-{
-    const uint8_t distanceDifferenceMinimal = ((this->frontDistance / 1.8) + 40);
-
-    bool result = false;
-    uint16_t distanceDifference = (this->leftDistance - this->rightDistance);
-    if (distanceDifference > distanceDifferenceMinimal) {
-        result = true;
-    }
-    return result;
-}
-
-bool ChoiceTurn::isDistanceLarge()
-{
-    bool result = false;
-    if (this->frontDistance >= this->DISTANCE_LARGE) {
-        result = true;
-    }
-    return result;
-}
-
-bool ChoiceTurn::isDistanceCritical()
-{
-    bool result = false;
-    if (this->frontDistance <= this->DISTANCE_CRITICAL) {
-        result = true;
-    }
-    return result;
 }

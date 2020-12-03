@@ -9,7 +9,10 @@ void MoveLogic::init()
 
 void MoveLogic::main()
 {
-    uint16_t barrierFront = VisionAutomatismObject.barrierFront();
+    uint16_t barrierFrontLeft = VisionAutomatismObject.barrierFrontLeft();
+    uint16_t barrierFrontRight = VisionAutomatismObject.barrierFrontRight();
+    uint16_t barrierFront = VisionAutomatismObject.barrierFront(barrierFrontLeft, barrierFrontRight);
+
     uint16_t barrierLeft = VisionAutomatismObject.barrierLeft();
     uint16_t barrierRight = VisionAutomatismObject.barrierRight();
 
@@ -17,7 +20,7 @@ void MoveLogic::main()
     uint8_t speed = this->choiceSpeed(barrierFront);
     uint8_t speedLower = this->speedLower(barrierFront);
 
-    ChoiceTurnObject.calculate(barrierFront, barrierLeft, barrierRight);
+    ChoiceTurnObject.calculate(barrierFrontLeft, barrierFrontRight, barrierFront, barrierLeft, barrierRight);
 
     MoveAutomatismObject.moving(directionMove, ChoiceTurnObject.direction, speed, speedLower);
 }
@@ -35,7 +38,7 @@ uint8_t MoveLogic::choiceMove(uint16_t frontDistance)
 
 uint8_t MoveLogic::choiceSpeed(uint16_t frontDistance)
 {
-    const uint8_t SPEED_CRITICAL = 80;
+    const uint8_t SPEED_CRITICAL = 60;
     const uint16_t MAX_DISTANCE = 120;
     if (frontDistance > MAX_DISTANCE) {
         frontDistance = MAX_DISTANCE;
@@ -45,7 +48,7 @@ uint8_t MoveLogic::choiceSpeed(uint16_t frontDistance)
 
 uint8_t MoveLogic::speedLower(uint16_t frontDistance)
 {
-    const uint8_t DIFFERENCE_TO_TURN = 90;
+    const uint8_t DIFFERENCE_TO_TURN = 60;
 
     uint8_t speed = this->choiceSpeed(frontDistance);
     return (speed - DIFFERENCE_TO_TURN);

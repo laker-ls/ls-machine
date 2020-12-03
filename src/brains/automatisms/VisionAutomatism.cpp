@@ -20,12 +20,22 @@ void VisionAutomatism::setPinUltrasoundSenses()
     UltrasoundSenseRight.setPins(ULTRASOUND_RIGHT);
 }
 
-uint16_t VisionAutomatism::barrierFront()
+uint16_t VisionAutomatism::barrierFront(uint16_t barrierFrontLeft, uint16_t barrierFrontRight)
 {
-    uint16_t distanceLaser = this->distanceOfLaserNearestFront();
+    uint16_t distanceLaser = this->nearestDistance(barrierFrontLeft, barrierFrontRight);
     uint16_t distanceUltrasound = this->distanceOfUltrasoundNearestFront();
 
     return nearestDistance(distanceLaser, distanceUltrasound);
+}
+
+uint16_t VisionAutomatism::barrierFrontLeft()
+{
+    return LaserSenseLeft.distanceInCm();
+}
+
+uint16_t VisionAutomatism::barrierFrontRight()
+{
+    return LaserSenseRight.distanceInCm();
 }
 
 uint16_t VisionAutomatism::barrierLeft()
@@ -36,14 +46,6 @@ uint16_t VisionAutomatism::barrierLeft()
 uint16_t VisionAutomatism::barrierRight()
 {
     return UltrasoundSenseRight.distanceInCm();
-}
-
-uint16_t VisionAutomatism::distanceOfLaserNearestFront()
-{
-    uint16_t distanceLeft = LaserSenseLeft.distanceInCm();
-    uint16_t distanceRight = LaserSenseRight.distanceInCm();
-
-    return this->nearestDistance(distanceLeft, distanceRight);
 }
 
 uint16_t VisionAutomatism::distanceOfUltrasoundNearestFront()

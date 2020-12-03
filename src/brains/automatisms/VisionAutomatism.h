@@ -11,7 +11,10 @@ class VisionAutomatism
 {
     public:
         void init();
-        uint16_t barrierFront();
+        uint16_t barrierFront(uint16_t barrierFrontLeft, uint16_t barrierFrontRight);
+        uint16_t barrierFrontLeft();
+        uint16_t barrierFrontRight();
+
         uint16_t barrierLeft();
         uint16_t barrierRight();
 
@@ -25,7 +28,6 @@ class VisionAutomatism
 
         void setPinLaserSenses();
         void setPinUltrasoundSenses();
-        uint16_t distanceOfLaserNearestFront();
         uint16_t distanceOfUltrasoundNearestFront();
         uint16_t nearestDistance(uint16_t first, uint16_t second);
 };
